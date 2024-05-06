@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Jewelry Store Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .class-container {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .class-title {
+            margin: 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .search-container {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .search-result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Jewelry Store Management System</h1>
+
+    <div class="class-container">
+        <h2 class="class-title">Jewelry Inventory</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Quantity</th>
+            </tr>
+            </thead>
+            <tbody id="jewelryList"></tbody>
+        </table>
+    </div>
+
+    <div class="class-container">
+        <h2 class="class-title">Staff</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Phone</th>
+            </tr>
+            </thead>
+            <tbody id="staffList"></tbody>
+        </table>
+    </div>
+
+    <div class="class-container">
+        <h2 class="class-title">Orders</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer Name</th>
+                <th>Products</th>
+            </tr>
+            </thead>
+            <tbody id="orderList"></tbody>
+        </table>
+    </div>
+
+    <div class="class-container">
+        <h2 class="class-title">Customers</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Phone</th>
+            </tr>
+            </thead>
+            <tbody id="customerList"></tbody>
+        </table>
+    </div>
+
+    <div class="search-container">
+        <h2>Search Jewelry</h2>
+        <input type="text" id="searchInput" placeholder="Enter product name">
+        <button onclick="searchJewelry()">Search</button>
+    </div>
+
+    <div class="search-result" id="searchResult"></div>
+</div>
+
+<script>
+    class Jewelry {
+        constructor(code, name, quantity) {
+            this.code = code;
+            this.name = name;
+            this.quantity = quantity;
+        }
+    }
+
+    class Staff {
+        constructor(name, role, phone) {
+            this.name = name;
+            this.role = role;
+            this.phone = phone;
+        }
+    }
+
+    class Order {
+        constructor(orderId, customerName, productList) {
+            this.orderId = orderId;
+            this.customerName = customerName;
+            this.productList = productList;
+        }
+    }
+
+    class Customer {
+        constructor(name, address, phone) {
+            this.name = name;
+            this.address = address;
+            this.phone = phone;
+        }
+    }
+
+    class JewelryStoreManager {
+        constructor() {
+            this.jewelries = [];
+            this.staffs = [];
+            this.orders = [];
+            this.customers = [];
+        }
+
+        addJewelry(code, name, quantity) {
+            let newJewelry = new Jewelry(code, name, quantity);
+            this.jewelries.push(newJewelry);
+        }
+
+        displayJewelries() {
+            let jewelryListTable = document.getElementById("jewelryList");
+            this.jewelries.forEach(jewelry => {
+                let row = jewelryListTable.insertRow();
+                let cell1 = row.insertCell(0);
+                let cell2 = row.insertCell(1);
+                let cell3 = row.insertCell(2);
+                cell1.innerHTML = jewelry.code;
+                cell2.innerHTML = jewelry.name;
+                cell3.innerHTML = jewelry.quantity;
+            });
+        }
+
+        addStaff(name, role, phone) {
+            let newStaff = new Staff(name, role, phone);
+            this.staffs.push(newStaff);
+        }
+
+        displayStaffs() {
+            let staffListTable = document.getElementById("staffList");
+            this.staffs.forEach(staff => {
+                let row = staffListTable.insertRow();
+                let cell1 = row.insertCell(0);
+                let cell2 = row.insertCell(1);
+                let cell3 = row.insertCell(2);
+                cell1.innerHTML = staff.name;
+                cell2.innerHTML = staff.role;
+                cell3.innerHTML = staff.phone;
+            });
+        }
+
+        addOrder(orderId, customerName, productList) {
+            let newOrder = new Order(orderId, customerName, productList);
+            this.orders.push(newOrder);
+        }
+
+        displayOrders() {
+            let orderListTable = document.getElementById("orderList");
+            this.orders.forEach(order => {
+                let row = orderListTable.insertRow();
+                let cell1 = row.insertCell(0);
+                let cell2 = row.insertCell(1);
+                let cell3 = row.insertCell(2);
+                cell1.innerHTML = order.orderId;
+                cell2.innerHTML = order.customerName;
+                let productList = '';
+                order.productList.forEach(product => {
+                    productList += `${product.name} - Quantity: ${product.quantity}<br>`;
+                });
+                cell3.innerHTML = productList;
+            });
+        }
+
+        addCustomer(name, address, phone) {
+            let newCustomer = new Customer(name, address, phone);
+            this.customers.push(newCustomer);
+        }
+
+        displayCustomers() {
+            let customerListTable = document.getElementById("customerList");
+            this.customers.forEach(customer => {
+                let row = customerListTable.insertRow();
+                let cell1 = row.insertCell(0);
+                let cell2 = row.insertCell(1);
+                let cell3 = row.insertCell(2);
+                cell1.innerHTML = customer.name;
+                cell2.innerHTML = customer.address;
+                cell3.innerHTML = customer.phone;
+            });
+        }
+
+        searchJewelryByName(name) {
+            let foundJewelries = this.jewelries.filter(jewelry => {
+                return jewelry.name.toLowerCase().includes(name.toLowerCase());
+            });
+
+            let searchResultDiv = document.getElementById("searchResult");
+            searchResultDiv.innerHTML = "";
+
+            if (foundJewelries.length > 0) {
+                searchResultDiv.innerHTML = "<h2>Search Results:</h2>";
+                foundJewelries.forEach(jewelry => {
+                    searchResultDiv.innerHTML += `<p><strong>${jewelry.name}</strong> - Code: ${jewelry.code}, Quantity: ${jewelry.quantity}</p>`;
+                });
+            } else {
+                searchResultDiv.innerHTML = "<p>No products found.</p>";
+            }
+        }
+    }
+
+    let jewelryStoreManager = new JewelryStoreManager();
+
+    jewelryStoreManager.addJewelry("TS001", "18k Gold Ring", 10);
+    jewelryStoreManager.addJewelry("TS002", "24k Gold Necklace", 10);
+    jewelryStoreManager.addJewelry("TS003", "Diamond Necklace", 5);
+
+    jewelryStoreManager.addStaff("Nguyễn Văn A", "Jewelry Craftsperson", "0911111111");
+    jewelryStoreManager.addStaff("Trần Thị B", "Sales Associate","0922222222");
+
+    let orderProducts = [
+        new Jewelry("TS001", "Gold Ring", 2),
+        new Jewelry("TS002", "24k Gold Necklace", 1)
+    ];
+    jewelryStoreManager.addOrder("ORD001", "Nguyễn Thị C", orderProducts);
+
+    jewelryStoreManager.addCustomer("Nguyễn Văn D", "District 1, HCM City", "0933333333");
+    jewelryStoreManager.addCustomer("Trần Thị E", "District 7, HCM City", "0966666666");
+
+    jewelryStoreManager.displayJewelries();
+    jewelryStoreManager.displayStaffs();
+    jewelryStoreManager.displayOrders();
+    jewelryStoreManager.displayCustomers();
+
+    function searchJewelry() {
+        let searchInput = document.getElementById("searchInput").value;
+        jewelryStoreManager.searchJewelryByName(searchInput);
+    }
+</script>
+</body>
+</html>
+
